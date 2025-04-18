@@ -7,7 +7,8 @@ const FinalEditor = () => {
 
   useEffect(() => {
     if (sessionId) {
-      setVideoUrl(`http://localhost:3000/preview/${sessionId}`);
+      // ✅ Use Render backend for deployed video streaming
+      setVideoUrl(`https://editx-backend.onrender.com/preview/${sessionId}`);
     }
   }, [sessionId]);
 
