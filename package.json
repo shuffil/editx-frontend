@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "npx --yes vite build && cp _redirects dist/",
+    "build": "./node_modules/.bin/vite build && cp _redirects dist/",
     "preview": "vite preview"
   },
   "dependencies": {
