@@ -3,10 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EditX</title>
+    <title>EditX Upload</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #0e0e0e;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      h1 {
+        margin-bottom: 1rem;
+      }
+      form {
+        background: #1a1a1a;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      }
+      input[type="file"] {
+        margin-bottom: 1rem;
+        background: #333;
+        border: none;
+        padding: 0.5rem;
+        color: white;
+      }
+      button {
+        padding: 0.75rem 2rem;
+        border: none;
+        background: #00b3ff;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <h1>Upload Your Videos to EditX</h1>
+    <form onsubmit="handleUpload(event)">
+      <input type="file" id="fileInput" multiple />
+      <br />
+      <button type="submit">Upload</button>
+    </form>
+
+    <script>
+      async function handleUpload(event) {
+        event.preventDefault();
+
+        const files = document.getElementById("fileInput").files;
+        const formData = new FormData();
+
+        for (const file of files) {
+          formData.append("file", file); // ✅ field name must match backend
+        }
+
+        try {
+          const response = await fetch("http://localhost:10000/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            alert(`✅ Upload complete! Session: ${result.sessionId}`);
+            console.log(result);
+          } else {
+            alert(`❌ Upload failed: ${result.error}`);
+          }
+        } catch (err) {
+          alert("❌ Upload error. Check console.");
+          console.error(err);
+        }
+      }
+    </script>
   </body>
 </html>
