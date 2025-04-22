@@ -8,7 +8,7 @@ const Preview = () => {
   useEffect(() => {
     const fetchPreview = async () => {
       try {
-        const url = `https://editx-backend.onrender.com/preview/${sessionId}`;
+        const url = `https://editx-backend.onrender.com/exports/${sessionId}.mp4`;
         setVideoUrl(url); // Direct video stream URL from backend
       } catch (error) {
         console.error('Failed to load preview:', error);
