@@ -25,11 +25,10 @@
     </style>
   </head>
   <body>
-    <form id="upload-form">
-      <h2>Upload Videos</h2>
-      <input type="file" name="files" id="file-input" multiple />
+    <form id="uploadForm" enctype="multipart/form-data" method="POST">
+      <input type="file" name="files" multiple />
       <button type="submit">Upload</button>
-      <p id="status"></p>
+    </form>    
     </form>
 
     <script type="module" src="/src/main.jsx"></script>
