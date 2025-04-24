@@ -1,21 +1,20 @@
-import { exec } from 'child_process';
+import { build } from 'vite';
 import fs from 'fs';
 
-console.log('🔨 Running Vite build manually...');
+console.log('🔨 Running Vite build with Vite Node API...');
 
-exec('./node_modules/.bin/vite build', (err, stdout, stderr) => {
-  if (err) {
-    console.error('❌ Build error:', stderr);
-    return;
-  }
-
-  console.log(stdout);
-
-  // ✅ Copy _redirects if it exists
+try {
+  await build(); // Uses vite.config.js by default
+  console.log('✅ Vite build completed');
+  
+  // Optional: copy _redirects
   try {
     fs.copyFileSync('public/_redirects', 'dist/_redirects');
     console.log('✅ _redirects copied into dist');
-  } catch (copyErr) {
-    console.error('❌ Failed to copy _redirects:', copyErr.message);
+  } catch (err) {
+    console.warn('⚠️ _redirects copy skipped:', err.message);
   }
-});
+
+} catch (err) {
+  console.error('❌ Vite build error:', err.message);
+}
