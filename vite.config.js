@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs'; // ✅ Correct placement (outside defineConfig)
 
 export default defineConfig({
   plugins: [react()],
@@ -18,18 +18,18 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    historyApiFallback: true, // ✅ local dev fallback for SPA
+    historyApiFallback: true,
   },
   preview: {
-    historyApiFallback: true, // ✅ Render dev fallback
+    historyApiFallback: true,
   },
-  // ✅ Copy _redirects after build (for Render SPA routing)
-  async closeBundle() {
-    const redirectsSrc = path.resolve(__dirname, 'public/_redirects');
-    const redirectsDest = path.resolve(__dirname, 'dist/_redirects');
-    if (fs.existsSync(redirectsSrc)) {
-      fs.copyFileSync(redirectsSrc, redirectsDest);
-      console.log('✅ Copied _redirects to dist');
+  // ✅ Final corrected hook to copy _redirects file after build
+  closeBundle: async () => {
+    const from = path.resolve(__dirname, 'public/_redirects');
+    const to = path.resolve(__dirname, 'dist/_redirects');
+    if (fs.existsSync(from)) {
+      fs.copyFileSync(from, to);
+      console.log('✅ _redirects copied to dist');
     } else {
       console.warn('⚠️ _redirects file not found in /public');
     }
